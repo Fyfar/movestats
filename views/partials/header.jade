@@ -1,0 +1,13 @@
+//
+   Created by Fyfar on 30.08.2014.
+
+header
+    .wrapper
+        .logo MoveStats
+        .menu
+            ul
+                li
+                    if user
+                        a(href='/auth/logout') Log Out
+                    else
+                        a(href='/auth/moves') Log In

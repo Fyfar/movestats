@@ -1,0 +1,31 @@
+//
+   Created by Fyfar on 30.08.2014.
+
+html
+    head
+        title MoveStats
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        //link(rel="stylesheet" href='//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css')
+        //script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+        //script(src='//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js')
+        //script(src='/javascripts/jquery.nestedAccordion.js')
+        script(src='/javascripts/chart-min.js')
+        script(src='/javascripts/server_req.js')
+    body
+        include ../partials/header
+        .wrapper
+            block sub-menu
+                .sub-menu
+                    .title Statistics
+                    .menu
+                        ul
+                            li: a(href='#') Summaries
+                            li: a(href='#') Activities
+                            li: a(href='#') Locations
+            block aside
+                aside
+                    .title Entries
+                    .summaries
+                        .list-title Recent
+                        ul.list#list
+            block content
