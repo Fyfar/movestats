@@ -1,6 +1,7 @@
 *
   margin 0
   padding 0
+  text-decoration none
 
 body
   font-family 'Segoe UI'
@@ -33,6 +34,17 @@ header
 .title
   font-size 14pt
   margin-bottom 15px
+  display inline-block
+
+.total-info
+  display inline-block
+  margin-left 30px
+  font-size 10pt
+  #steps
+    display inline-block
+    margin-right 20px
+  #distance
+    display inline-block
 
 .sub-menu
   margin auto
@@ -57,7 +69,7 @@ aside
 
 .summaries
   margin-top 15px
-  width 350px
+  width 300px
   .list-title
     background #292B36
     color #AEAEAE
@@ -92,6 +104,17 @@ aside
 .chart
   font-size 14pt
   width 70%
+  .buttons
+    a
+      display inline-block
+      margin 0 10px
+      padding 5px 15px
+      font-size 12pt
+      background #333
+      color #fff
+      &:hover
+        background rgba(0,200,88,0.8)
+        color #ffffff
 
 .wrapper
   margin auto

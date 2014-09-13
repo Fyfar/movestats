@@ -1,8 +1,1 @@
-extends layouts/base
-
-block content
-    section
-        .title Summary
-        .chart
-            .canvas-holder
-                canvas#canvas-area(width='800' height='300')
+extends layouts/baseblock content    section        .title Summary        .total-info            #steps            #distance        .chart            .canvas-holder#canvas-holder                canvas#canvas-area(width='800' height='300')            .buttons                a(href='#') Day                a(href='#' id='week') Week                a(href='#' id='month') Month
