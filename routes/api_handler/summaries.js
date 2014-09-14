@@ -21,6 +21,14 @@ exports.getMonth = function (req, res, next) {
         res.send(data);
     });
 };
+// format yyyy-Www
+exports.getWeek = function (req, res, next) {
+    var uri = util.format("%s/user/summary/daily/%s?access_token=", config.get('moves_api:base_url'), req.params.date);
+    request.makeRequest(req, uri, function (err, data) {
+        if (err) next(err);
+        res.send(data);
+    });
+};
 // form yyyyMMdd to yyyyMMdd
 exports.getRangeDays = function (req, res, next) {
     if (req.query.from === undefined || req.query.to === undefined) res.redirect('/');

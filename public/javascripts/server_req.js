@@ -19,9 +19,14 @@ $(document).ready(function () {
     var chart = null;
 
     function addToData(item, arr) {
-        if (item.steps !== undefined) {
+        if (item === null) {
             barChartData.labels.push(numericToDate(arr.date, true));
-            barChartData.datasets[0].data.push(item.steps);
+            barChartData.datasets[0].data.push(0);
+        } else {
+            if (item.steps !== undefined) {
+                barChartData.labels.push(numericToDate(arr.date, true));
+                barChartData.datasets[0].data.push(item.steps);
+            }
         }
     }
 
@@ -33,8 +38,12 @@ $(document).ready(function () {
 
         var results = info;
         for (var i = results.length - 1; i >= 0; i--) {
-            for (var summ_index in results[i].summary) {
-                addToData(results[i].summary[summ_index], results[i]);
+            if (results[i].summary === null) {
+                addToData(null, results[i]);
+            } else {
+                for (var summ_index in results[i].summary) {
+                    addToData(results[i].summary[summ_index], results[i]);
+                }
             }
         }
         if (update) {
@@ -89,18 +98,18 @@ $(document).ready(function () {
     }
 
     document.getElementById('month').onclick = function () {
-        getPastDaysInfo(31, function (info) {
+        getMonthInfo(function (info) {
             addDataToChart(info, true);
         });
     };
     document.getElementById('week').onclick = function () {
-        getPastDaysInfo(7, function (info) {
+        getWeekInfo(function (info) {
             addDataToChart(info, true);
         })
     };
 
     (function () {
-        getPastDaysInfo(7, function (info) {
+        getWeekInfo(function (info) {
             addDataToTables(info.slice(-5), false);
             addDataToChart(info, false);
         });
@@ -111,6 +120,50 @@ function getPastDaysInfo(countDays, callback) {
     var xhr = new XMLHttpRequest();
 
     xhr.open('GET', '/api/summaries/past_days/' + countDays, true);
+    xhr.onreadystatechange = function () {
+        if (this.readyState != 4) return;
+        if (this.status != 200) {
+            console.log('Error ' + xhr.status + ' ' + xhr.statusText);
+            return;
+        }
+
+        callback(JSON.parse(xhr.responseText));
+    };
+    xhr.send(null);
+}
+
+function getWeekInfo(callback) {
+    var weekNumber = new Date().getWeek();
+    var date = new Date();
+    var dateWeek = date.getFullYear() + '-W' + weekNumber;
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', '/api/summaries/week/' + dateWeek, true);
+    xhr.onreadystatechange = function () {
+        if (this.readyState != 4) return;
+        if (this.status != 200) {
+            console.log('Error ' + xhr.status + ' ' + xhr.statusText);
+            return;
+        }
+
+        callback(JSON.parse(xhr.responseText));
+    };
+    xhr.send(null);
+}
+
+function getMonthInfo(callback) {
+    var date = new Date();
+    var dateWeek = date.getFullYear() + '';
+    if (date.getMonth() < 9) {
+        dateWeek += '0' + (date.getMonth() + 1);
+    } else {
+        dateWeek += (date.getMonth() + 1);
+    }
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.open('GET', '/api/summaries/month/' + dateWeek, true);
     xhr.onreadystatechange = function () {
         if (this.readyState != 4) return;
         if (this.status != 200) {
@@ -179,3 +232,8 @@ function sumDistance(info) {
     }
     return meters;
 }
+
+Date.prototype.getWeek = function () {
+    var onejan = new Date(this.getFullYear(), 0, 1);
+    return Math.ceil((this - onejan) / 86400000 / 7);
+};
